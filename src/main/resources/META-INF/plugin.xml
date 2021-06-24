@@ -1,0 +1,38 @@
+<idea-plugin>
+    <id>com.easycr</id>
+    <name>EasyCR</name>
+    <vendor email="zhaiss1@lenovo.com" url="https://www.lenovo.com">Lenovo</vendor>
+
+    <description><![CDATA[
+    Make code review record easy! Make life better!
+    <em>demo</em>
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <applicationService serviceImplementation="com.easycr.setting.AppSettingsState"/>
+
+        <applicationConfigurable parentId="tools" instance="com.easycr.setting.AppSettingsConfigurable"
+                                 id="com.easycr.setting.AppSettingsConfigurable"
+                                 displayName="EasyCR"/>
+    </extensions>
+
+    <actions>
+<!--        <group text="Mytest">-->
+<!--            <add-to-group group-id="ToolsMenu" anchor="last"/>-->
+<!--            <action class="com.hanfei.action.RecordAction" text="EasyMark">-->
+<!--                <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>-->
+<!--            </action>-->
+<!--        </group>-->
+        <action id="com.easycr.action.RecordAction" class="com.easycr.action.RecordAction" text="EasyCRMark"
+                description="Mark an CR item">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
+        </action>
+    </actions>
+
+</idea-plugin>
