@@ -16,4 +16,8 @@ public class FixItem {
     private String author;
     private Boolean done;
 
+    @Override
+    public String toString() {
+        return "* [ ] " + position + " " + message + " @" + author;
+    }
 }

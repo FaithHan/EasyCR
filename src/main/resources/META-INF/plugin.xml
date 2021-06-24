@@ -19,6 +19,8 @@
         <applicationConfigurable parentId="tools" instance="com.easycr.setting.AppSettingsConfigurable"
                                  id="com.easycr.setting.AppSettingsConfigurable"
                                  displayName="EasyCR"/>
+
+        <notificationGroup id="com.easycr" displayType="BALLOON"/>
     </extensions>
 
     <actions>

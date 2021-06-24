@@ -99,7 +99,7 @@ public abstract class DayResutFileUtil {
                         printWriter.println();
                         List<FixItem> fixItems = entry.getValue();
                         for (FixItem fixItem : fixItems) {
-                            printWriter.println("* [ ] " + fixItem.getPosition() + " " + fixItem.getMessage() + " @" + fixItem.getAuthor());
+                            printWriter.println(fixItem);
                         }
                     });
                     printWriter.println();
