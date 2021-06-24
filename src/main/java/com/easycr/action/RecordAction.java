@@ -70,7 +70,7 @@ public class RecordAction extends AnAction {
                 .getProjectResultMap().computeIfAbsent(projectName, key -> new ArrayList<>())
                 .add(fixItem);
         WriteCommandAction.runWriteCommandAction(null, () -> DayResutFileUtil.print(dayResultMap));
-        RecordNotifier.notifyInfo(null,"EasyCR add a new Item Success!");
+        RecordNotifier.notifyInfo(project, position);
     }
 
 
