@@ -36,7 +36,7 @@ public class RecordAction extends AnAction {
             Messages.showErrorDialog("You need to select a code line", "Hi!");
             return;
         }
-        int column = editor.getCaretModel().getCurrentCaret().getLogicalPosition().line;
+        int column = editor.getCaretModel().getCurrentCaret().getLogicalPosition().line + 1;
         Project project = e.getProject();
         String basePath = project.getBasePath();
         String filePath = e.getData(PlatformDataKeys.FILE_EDITOR).getFile().getPath();
