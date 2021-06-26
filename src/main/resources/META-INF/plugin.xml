@@ -4,9 +4,9 @@
     <vendor email="zhaiss1@lenovo.com" url="https://www.lenovo.com">Lenovo</vendor>
 
     <description><![CDATA[
-    <em>To make Code Review recording Easier! To make life better/em>
+    <em>To make code review recording easier! To make life better</em>
     <br/>
-    <h3>How to use EasyCR?</h3>
+    <em>How to use EasyCR?</em>
     <ol>
         <li>First, you need to configure a path to store log files, a file named EasyCR.md will be created automatically under this path.</li>
         <li>Secondly you need to configure some members.</li>
