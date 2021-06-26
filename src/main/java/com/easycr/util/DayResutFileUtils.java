@@ -14,10 +14,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
-public abstract class DayResutFileUtil {
+public abstract class DayResutFileUtils {
 
     private static final String FILE_NAME = "EasyCR.md";
 
@@ -92,12 +91,10 @@ public abstract class DayResutFileUtil {
                 .forEach(dayResult -> {
                     String date = dayResult.getDate();
                     printWriter.println(String.format("## Date: %s", date));
-                    dayResult.getProjectResultMap().entrySet().stream().forEach(entry -> {
-                        String project = entry.getKey();
+                    dayResult.getProjectResultMap().forEach((project, fixItems) -> {
                         printWriter.println();
                         printWriter.println(String.format("#### %s", project));
                         printWriter.println();
-                        List<FixItem> fixItems = entry.getValue();
                         for (FixItem fixItem : fixItems) {
                             printWriter.println(fixItem);
                         }

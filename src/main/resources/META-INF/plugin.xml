@@ -4,8 +4,15 @@
     <vendor email="zhaiss1@lenovo.com" url="https://www.lenovo.com">Lenovo</vendor>
 
     <description><![CDATA[
-    Make code review record easy! Make life better!
-    <em>demo</em>
+    <em>To make Code Review recording Easier! To make life better/em>
+    <br/>
+    <h3>How to use EasyCR?</h3>
+    <ol>
+        <li>First, you need to configure a path to store log files, a file named EasyCR.md will be created automatically under this path.</li>
+        <li>Secondly you need to configure some members.</li>
+        <li>Position the cursor where you need to record and press alt+M.</li>
+        <li>Fill in message and members,then submit. And see the EasyCR file. Wow! Magic happened, A new marked item is added. So incredible!!!</li>
+    </ol>
     ]]></description>
 
     <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
@@ -24,12 +31,6 @@
     </extensions>
 
     <actions>
-<!--        <group text="Mytest">-->
-<!--            <add-to-group group-id="ToolsMenu" anchor="last"/>-->
-<!--            <action class="com.hanfei.action.RecordAction" text="EasyMark">-->
-<!--                <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>-->
-<!--            </action>-->
-<!--        </group>-->
         <action id="com.easycr.action.RecordAction" class="com.easycr.action.RecordAction" text="EasyCRMark"
                 description="Mark an CR item">
             <add-to-group group-id="ToolsMenu" anchor="last"/>

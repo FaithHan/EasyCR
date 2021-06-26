@@ -1,10 +1,11 @@
 package com.easycr.action;
 
+import com.easycr.dialog.RecordDialog;
 import com.easycr.entity.DayResult;
 import com.easycr.entity.FixItem;
 import com.easycr.notify.RecordNotifier;
 import com.easycr.setting.AppSettingsState;
-import com.easycr.util.DayResutFileUtil;
+import com.easycr.util.DayResutFileUtils;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -57,7 +58,7 @@ public class RecordAction extends AnAction {
 
         String position = filePath.substring(basePath.length()) + ":" + column;
 
-        Map<String, DayResult> dayResultMap = DayResutFileUtil.converter();
+        Map<String, DayResult> dayResultMap = DayResutFileUtils.converter();
 
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
@@ -69,7 +70,7 @@ public class RecordAction extends AnAction {
         dayResultMap.computeIfAbsent(date, key -> new DayResult(date))
                 .getProjectResultMap().computeIfAbsent(projectName, key -> new ArrayList<>())
                 .add(fixItem);
-        WriteCommandAction.runWriteCommandAction(null, () -> DayResutFileUtil.print(dayResultMap));
+        WriteCommandAction.runWriteCommandAction(null, () -> DayResutFileUtils.print(dayResultMap));
         RecordNotifier.notifyInfo(project, position);
     }
 

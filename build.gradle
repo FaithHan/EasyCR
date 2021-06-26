@@ -28,7 +28,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-      To make better life<br>
+      To make code review recording Easier! To make life better!<br>
       <em>EasyCR</em>"""
 }
 test {
