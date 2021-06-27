@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+import static com.easycr.setting.AppSettingsState.DEFAULT_LOG_PATH;
+import static com.easycr.setting.AppSettingsState.DEFAULT_MEMBERS;
+
 /**
  * Provides controller functionality for application settings.
  */
@@ -52,9 +55,8 @@ public class AppSettingsConfigurable implements Configurable {
 
   @Override
   public void reset() {
-    AppSettingsState settings = AppSettingsState.getInstance();
-    mySettingsComponent.setLogPath(settings.logPath);
-    mySettingsComponent.setMembers(settings.members);
+    mySettingsComponent.setLogPath(DEFAULT_LOG_PATH);
+    mySettingsComponent.setMembers(DEFAULT_MEMBERS);
   }
 
   @Override
