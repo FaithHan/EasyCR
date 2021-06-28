@@ -14,13 +14,16 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 public class RecordAction extends AnAction {
 
@@ -38,20 +41,22 @@ public class RecordAction extends AnAction {
             return;
         }
         int column = editor.getCaretModel().getCurrentCaret().getLogicalPosition().line + 1;
-        Project project = e.getProject();
-        String basePath = project.getBasePath();
+        Project project = e.getRequiredData(CommonDataKeys.PROJECT);
+        String basePath = Optional.ofNullable(project.getBasePath()).orElseThrow(RuntimeException::new);
         String projectName = project.getName();
-        String filePath = e.getData(PlatformDataKeys.FILE_EDITOR).getFile().getPath();
+        String filePath = Optional.of(e.getRequiredData(PlatformDataKeys.FILE_EDITOR))
+                .map(FileEditor::getFile)
+                .map(VirtualFile::getPath)
+                .orElseThrow(RuntimeException::new);
 
         RecordDialog recordDialog = new RecordDialog();
         recordDialog.setResizable(true);
-        boolean b = recordDialog.showAndGet();
-        if (!b) {
+        if (!recordDialog.showAndGet()) {
             return;
         }
 
         String message = recordDialog.message.getText();
-        String member = recordDialog.member.getSelectedItem().toString();
+        String member = Optional.ofNullable(recordDialog.member.getSelectedItem()).map(Object::toString).orElse("");
         String position = filePath.substring(basePath.length()) + ":" + column;
 
         FixItem fixItem = FixItem.builder()

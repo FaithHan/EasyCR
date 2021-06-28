@@ -12,9 +12,7 @@ import lombok.SneakyThrows;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class DayResutFileUtils {
 
@@ -23,7 +21,8 @@ public abstract class DayResutFileUtils {
     @SneakyThrows
     public static Map<String, DayResult> converter() {
         AppSettingsState service = ApplicationManager.getApplication().getService(AppSettingsState.class);
-        VirtualFile fileByIoFile = LocalFileSystem.getInstance().findFileByIoFile(new File(service.logPath));
+        VirtualFile fileByIoFile = Optional.ofNullable(LocalFileSystem.getInstance().findFileByIoFile(new File(service.logPath)))
+                .orElseThrow(RuntimeException::new);
 
         VirtualFile fileChild = fileByIoFile.findChild(FILE_NAME);
 
@@ -37,7 +36,7 @@ public abstract class DayResutFileUtils {
             });
         }
 
-        fileChild = fileByIoFile.findChild(FILE_NAME);
+        fileChild = Optional.ofNullable(fileByIoFile.findChild(FILE_NAME)).orElseThrow(RuntimeException::new);
 
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(fileChild.getInputStream(), StandardCharsets.UTF_8));
@@ -47,21 +46,15 @@ public abstract class DayResutFileUtils {
         String line;
         while ((line = reader.readLine()) != null) {
             line = line.trim();
-
             if (line.startsWith("## Date")) {
                 String date = line.substring(9);
-                currentDayResult = map.computeIfAbsent(date, key -> {
-                    DayResult dayResult = new DayResult();
-                    dayResult.setDate(date);
-                    return dayResult;
-                });
+                currentDayResult = map.computeIfAbsent(date, DayResult::new);
             }
-
             if (line.startsWith("####")) {
                 currentProjectName = line.substring(5);
+                Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().computeIfAbsent(currentProjectName, key -> new ArrayList<>());
             }
-
             if (line.startsWith("*")) {
                 int a = line.indexOf("/");
                 int b = line.indexOf(":");
@@ -69,21 +62,23 @@ public abstract class DayResutFileUtils {
                     b++;
                 }
                 int c = line.lastIndexOf("@");
-                FixItem fixItem = new FixItem();
-                fixItem.setPosition(line.substring(a, b));
-                fixItem.setMessage(line.substring(b, c).trim());
-                fixItem.setMember(line.substring(c + 1));
+                FixItem fixItem = FixItem.builder()
+                        .position(line.substring(a, b))
+                        .message(line.substring(b, c).trim())
+                        .member(line.substring(c + 1))
+                        .build();
+                Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().get(currentProjectName).add(fixItem);
             }
         }
-
         return map;
     }
 
     @SneakyThrows
     public static void print(Map<String, DayResult> map) {
         AppSettingsState service = ApplicationManager.getApplication().getService(AppSettingsState.class);
-        VirtualFile fileByIoFile = LocalFileSystem.getInstance().findFileByIoFile(new File(service.logPath, FILE_NAME));
+        VirtualFile fileByIoFile = Optional.ofNullable(LocalFileSystem.getInstance().findFileByIoFile(new File(service.logPath, FILE_NAME)))
+                .orElseThrow(RuntimeException::new);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         map.values().forEach(dayResult -> {
