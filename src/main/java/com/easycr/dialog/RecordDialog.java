@@ -30,7 +30,8 @@ public class RecordDialog extends DialogWrapper {
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
         MembersUtils.getCRMembers().forEach(member::addItem);
-        centerPanel.setPreferredSize(new Dimension(400, 0));
+        member.setEditable(true);
+        centerPanel.setPreferredSize(new Dimension(390, 0));
         return centerPanel;
     }
 

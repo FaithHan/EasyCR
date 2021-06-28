@@ -72,7 +72,7 @@ public abstract class DayResutFileUtils {
                 FixItem fixItem = new FixItem();
                 fixItem.setPosition(line.substring(a, b));
                 fixItem.setMessage(line.substring(b, c).trim());
-                fixItem.setAuthor(line.substring(c + 1));
+                fixItem.setMember(line.substring(c + 1));
                 currentDayResult.getProjectResultMap().get(currentProjectName).add(fixItem);
             }
         }

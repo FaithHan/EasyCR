@@ -1,23 +1,21 @@
 package com.easycr.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FixItem {
 
     private String position;
     private String message;
-    private String author;
+    private String member;
     private Boolean done;
 
     @Override
     public String toString() {
-        return "* [ ] " + position + " " + message + " @" + author;
+        return "* [ ] " + position + " " + message + " @" + member;
     }
 }
