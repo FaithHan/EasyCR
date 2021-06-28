@@ -86,9 +86,7 @@ public abstract class DayResutFileUtils {
         VirtualFile fileByIoFile = LocalFileSystem.getInstance().findFileByIoFile(new File(service.logPath, FILE_NAME));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
-        map.entrySet().stream()
-                .map(Map.Entry::getValue)
-                .forEach(dayResult -> {
+        map.values().forEach(dayResult -> {
                     String date = dayResult.getDate();
                     printWriter.println(String.format("## Date: %s", date));
                     dayResult.getProjectResultMap().forEach((project, fixItems) -> {
