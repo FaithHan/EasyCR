@@ -14,42 +14,42 @@ import javax.swing.*;
  */
 public class AppSettingsComponent {
 
-  private final JPanel myMainPanel;
-  private final JBTextField logPath = new JBTextField();
-  private final JBTextField members = new JBTextField();
+    private final JPanel myMainPanel;
+    private final JBTextField logPath = new JBTextField();
+    private final JBTextField members = new JBTextField();
 
-  public AppSettingsComponent() {
-    myMainPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent(new JBLabel("Your log path"), logPath, 1, false)
-            .addLabeledComponent(new JBLabel("Members"), members, 1, false)
-            .addComponent(new JBLabel("Members use \",\"to split"))
-            .addComponentFillVertically(new JPanel(), 0)
-            .getPanel();
-  }
+    public AppSettingsComponent() {
+        myMainPanel = FormBuilder.createFormBuilder()
+                .addLabeledComponent(new JBLabel("Your log path"), logPath, 1, false)
+                .addLabeledComponent(new JBLabel("Members"), members, 1, false)
+                .addComponent(new JBLabel("Members use \",\"to split"))
+                .addComponentFillVertically(new JPanel(), 0)
+                .getPanel();
+    }
 
-  public JPanel getPanel() {
-    return myMainPanel;
-  }
+    public JPanel getPanel() {
+        return myMainPanel;
+    }
 
-  public JComponent getPreferredFocusedComponent() {
-    return logPath;
-  }
+    public JComponent getPreferredFocusedComponent() {
+        return logPath;
+    }
 
-  @NotNull
-  public String getLogPath() {
-    return logPath.getText();
-  }
+    @NotNull
+    public String getLogPath() {
+        return logPath.getText();
+    }
 
-  public void setLogPath(@NotNull String newText) {
-    logPath.setText(newText);
-  }
+    public void setLogPath(@NotNull String newText) {
+        logPath.setText(newText);
+    }
 
-  public String getMembers() {
-    return members.getText();
-  }
+    public String getMembers() {
+        return members.getText();
+    }
 
-  public void setMembers(String newText) {
-    members.setText(newText);
-  }
+    public void setMembers(String newText) {
+        members.setText(newText);
+    }
 
 }

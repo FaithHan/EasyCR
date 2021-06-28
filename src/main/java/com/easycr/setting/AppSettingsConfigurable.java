@@ -16,52 +16,52 @@ import static com.easycr.setting.AppSettingsState.DEFAULT_MEMBERS;
  */
 public class AppSettingsConfigurable implements Configurable {
 
-  private AppSettingsComponent mySettingsComponent;
+    private AppSettingsComponent mySettingsComponent;
 
-  // A default constructor with no arguments is required because this implementation
-  // is registered as an applicationConfigurable EP
+    // A default constructor with no arguments is required because this implementation
+    // is registered as an applicationConfigurable EP
 
-  @Nls(capitalization = Nls.Capitalization.Title)
-  @Override
-  public String getDisplayName() {
-    return "SDK: Application Settings Example";
-  }
+    @Nls(capitalization = Nls.Capitalization.Title)
+    @Override
+    public String getDisplayName() {
+        return "SDK: Application Settings Example";
+    }
 
-  @Override
-  public JComponent getPreferredFocusedComponent() {
-    return mySettingsComponent.getPreferredFocusedComponent();
-  }
+    @Override
+    public JComponent getPreferredFocusedComponent() {
+        return mySettingsComponent.getPreferredFocusedComponent();
+    }
 
-  @Nullable
-  @Override
-  public JComponent createComponent() {
-    mySettingsComponent = new AppSettingsComponent();
-    return mySettingsComponent.getPanel();
-  }
+    @Nullable
+    @Override
+    public JComponent createComponent() {
+        mySettingsComponent = new AppSettingsComponent();
+        return mySettingsComponent.getPanel();
+    }
 
-  @Override
-  public boolean isModified() {
-    AppSettingsState settings = AppSettingsState.getInstance();
-    return !mySettingsComponent.getLogPath().equals(settings.logPath) ||
-    !mySettingsComponent.getMembers().equals(settings.members);
-  }
+    @Override
+    public boolean isModified() {
+        AppSettingsState settings = AppSettingsState.getInstance();
+        return !mySettingsComponent.getLogPath().equals(settings.logPath) ||
+                !mySettingsComponent.getMembers().equals(settings.members);
+    }
 
-  @Override
-  public void apply() {
-    AppSettingsState settings = AppSettingsState.getInstance();
-    settings.logPath = mySettingsComponent.getLogPath();
-    settings.members = mySettingsComponent.getMembers();
-  }
+    @Override
+    public void apply() {
+        AppSettingsState settings = AppSettingsState.getInstance();
+        settings.logPath = mySettingsComponent.getLogPath();
+        settings.members = mySettingsComponent.getMembers();
+    }
 
-  @Override
-  public void reset() {
-    mySettingsComponent.setLogPath(DEFAULT_LOG_PATH);
-    mySettingsComponent.setMembers(DEFAULT_MEMBERS);
-  }
+    @Override
+    public void reset() {
+        mySettingsComponent.setLogPath(DEFAULT_LOG_PATH);
+        mySettingsComponent.setMembers(DEFAULT_MEMBERS);
+    }
 
-  @Override
-  public void disposeUIResources() {
-    mySettingsComponent = null;
-  }
+    @Override
+    public void disposeUIResources() {
+        mySettingsComponent = null;
+    }
 
 }
