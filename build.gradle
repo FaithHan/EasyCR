@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.example'
-version '1.1'
+version '1.2'
 
 repositories {
     mavenCentral()
@@ -28,8 +28,12 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-      To make code review recording Easier! To make life better!<br>
-      <em>EasyCR</em>"""
+        <ul>
+            <li>Members can be input manually</li>
+            <li>Improve plugin performance</li>
+            <li>Improve program robustness</li>
+        </ul>      
+      """
 }
 test {
     useJUnitPlatform()
