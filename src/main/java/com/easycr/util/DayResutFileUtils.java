@@ -43,19 +43,20 @@ public abstract class DayResutFileUtils {
         Map<String, DayResult> map = new LinkedHashMap<>();
         DayResult currentDayResult = null;
         String currentProjectName = null;
+        boolean codeDemoBegin = false;
+        List<String> codeDemoLines = new ArrayList<>();
         String line;
         while ((line = reader.readLine()) != null) {
+            String originLine = line;
             line = line.trim();
             if (line.startsWith("## Date")) {
                 String date = line.substring(9);
                 currentDayResult = map.computeIfAbsent(date, DayResult::new);
-            }
-            if (line.startsWith("####")) {
+            } else if (line.startsWith("####")) {
                 currentProjectName = line.substring(5);
                 Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().computeIfAbsent(currentProjectName, key -> new ArrayList<>());
-            }
-            if (line.startsWith("*")) {
+            } else if (line.startsWith("*")) {
                 int a = line.indexOf("/");
                 int b = line.indexOf(":");
                 while (line.charAt(b) != ' ') {
@@ -69,6 +70,16 @@ public abstract class DayResutFileUtils {
                         .build();
                 Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().get(currentProjectName).add(fixItem);
+            } else if (line.startsWith("```") && !codeDemoBegin) {
+                codeDemoBegin = true;
+            } else if (line.startsWith("```") && codeDemoBegin) {
+                codeDemoBegin = false;
+                Objects.requireNonNull(currentDayResult);
+                List<FixItem> fixItems = currentDayResult.getProjectResultMap().get(currentProjectName);
+                fixItems.get(fixItems.size() - 1).setCodeDemo(String.join("\n", codeDemoLines));
+                codeDemoLines.clear();
+            } else if (!line.startsWith("```") && codeDemoBegin) {
+                codeDemoLines.add(originLine);
             }
         }
         return map;
@@ -82,20 +93,20 @@ public abstract class DayResutFileUtils {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         map.values().forEach(dayResult -> {
-                    String date = dayResult.getDate();
-                    printWriter.println(String.format("## Date: %s", date));
-                    dayResult.getProjectResultMap().forEach((project, fixItems) -> {
-                        printWriter.println();
-                        printWriter.println(String.format("#### %s", project));
-                        printWriter.println();
-                        for (FixItem fixItem : fixItems) {
-                            printWriter.println(fixItem);
-                        }
-                    });
-                    printWriter.println();
-                    printWriter.println("---");
-                    printWriter.println();
-                });
+            String date = dayResult.getDate();
+            printWriter.println(String.format("## Date: %s", date));
+            dayResult.getProjectResultMap().forEach((project, fixItems) -> {
+                printWriter.println();
+                printWriter.println(String.format("#### %s", project));
+                printWriter.println();
+                for (FixItem fixItem : fixItems) {
+                    printWriter.println(fixItem);
+                }
+            });
+            printWriter.println();
+            printWriter.println("---");
+            printWriter.println();
+        });
         printWriter.flush();
         fileByIoFile.setBinaryContent(out.toByteArray());
     }
