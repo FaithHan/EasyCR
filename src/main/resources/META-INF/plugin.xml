@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.easycr</id>
     <name>EasyCR</name>
-    <vendor email="zhaiss1@lenovo.com" url="https://www.lenovo.com">Lenovo</vendor>
+    <vendor email="zhaiss1@lenovo.com" url="https://www.lenovo.com">zhaishasha</vendor>
 
     <description><![CDATA[
     <em>To make code review recording easier! To make life better</em>
