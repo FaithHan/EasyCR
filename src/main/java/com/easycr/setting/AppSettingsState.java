@@ -25,8 +25,8 @@ import java.io.File;
 )
 public class AppSettingsState implements PersistentStateComponent<AppSettingsState> {
 
-    private static final String DEFAULT_LOG_PATH = "";
-    private static final String DEFAULT_MEMBERS = "";
+    public static final String DEFAULT_LOG_PATH = "";
+    public static final String DEFAULT_MEMBERS = "";
 
     public String logPath = DEFAULT_LOG_PATH;
     public String members = DEFAULT_MEMBERS;

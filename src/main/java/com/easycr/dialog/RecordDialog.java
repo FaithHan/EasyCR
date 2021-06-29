@@ -1,6 +1,6 @@
-package com.easycr.action;
+package com.easycr.dialog;
 
-import com.easycr.util.MembersUtil;
+import com.easycr.util.MembersUtils;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBLabel;
@@ -29,8 +29,10 @@ public class RecordDialog extends DialogWrapper {
                 .addLabeledComponent(new JBLabel("Member"), member, 1, false)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
-        MembersUtil.getMembers().forEach(member::addItem);
-        centerPanel.setPreferredSize(new Dimension(400, 0));
+        MembersUtils.getCRMembers().forEach(member::addItem);
+        member.setEditable(true);
+        member.setMinimumAndPreferredWidth(170);
+        centerPanel.setPreferredSize(new Dimension(390, 0));
         return centerPanel;
     }
 
