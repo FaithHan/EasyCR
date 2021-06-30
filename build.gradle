@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.example'
-version '2.1'
+version '2.3'
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-        Add code demo select feature      
+        fix setting ui bug      
       """
 }
 test {
