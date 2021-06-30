@@ -55,8 +55,9 @@ public class AppSettingsConfigurable implements Configurable {
 
     @Override
     public void reset() {
-        mySettingsComponent.setLogPath(DEFAULT_LOG_PATH);
-        mySettingsComponent.setMembers(DEFAULT_MEMBERS);
+        AppSettingsState settings = AppSettingsState.getInstance();
+        mySettingsComponent.setLogPath(settings.logPath);
+        mySettingsComponent.setMembers(settings.members);
     }
 
     @Override
