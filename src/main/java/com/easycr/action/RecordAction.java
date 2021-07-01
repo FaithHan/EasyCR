@@ -8,6 +8,7 @@ import com.easycr.setting.AppSettingsState;
 import com.easycr.util.DateUtils;
 import com.easycr.util.DayResutFileUtils;
 import com.easycr.util.StringUtils;
+import com.intellij.codeInsight.daemon.OutsidersPsiFileSupport;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -43,10 +44,7 @@ public class RecordAction extends AnAction {
         Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         String basePath = Optional.ofNullable(project.getBasePath()).orElseThrow(RuntimeException::new);
         String projectName = project.getName();
-        String filePath = Optional.of(e.getRequiredData(PlatformDataKeys.FILE_EDITOR))
-                .map(FileEditor::getFile)
-                .map(VirtualFile::getPath)
-                .orElseThrow(RuntimeException::new);
+        String filePath = getFilePath(e);
 
         RecordDialog recordDialog = new RecordDialog();
         recordDialog.setResizable(true);
@@ -73,6 +71,17 @@ public class RecordAction extends AnAction {
 
         WriteCommandAction.runWriteCommandAction(null, () -> DayResutFileUtils.print(dayResultMap));
         RecordNotifier.notifyInfo(project, position);
+    }
+
+    private String getFilePath(@NotNull AnActionEvent e) {
+        String originalFilePath = OutsidersPsiFileSupport.getOriginalFilePath(e.getRequiredData(PlatformDataKeys.VIRTUAL_FILE));
+        if (StringUtils.isNotEmpty(originalFilePath)) {
+            return originalFilePath;
+        }
+        return Optional.of(e.getRequiredData(PlatformDataKeys.FILE_EDITOR))
+                .map(FileEditor::getFile)
+                .map(VirtualFile::getPath)
+                .orElseThrow(RuntimeException::new);
     }
 
     private String getSelectedText(Editor editor) {
