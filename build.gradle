@@ -28,7 +28,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-        fix setting ui bug      
+        optimze code demo format    
       """
 }
 test {
