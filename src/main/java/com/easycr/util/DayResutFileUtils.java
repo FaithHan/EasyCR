@@ -56,7 +56,7 @@ public abstract class DayResutFileUtils {
                 currentProjectName = line.substring(5);
                 Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().computeIfAbsent(currentProjectName, key -> new ArrayList<>());
-            } else if (line.startsWith("*")) {
+            } else if (line.startsWith("* [ ]") && line.contains("@")) {
                 int a = line.indexOf("/");
                 int b = line.indexOf(":");
                 while (line.charAt(b) != ' ') {
