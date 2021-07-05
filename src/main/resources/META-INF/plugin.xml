@@ -10,7 +10,7 @@
     <ol>
         <li>First, you need to configure a path to store log files, a file named EasyCR.md will be created automatically under this path.</li>
         <li>Secondly you need to configure some members.</li>
-        <li>Position the cursor where you need to record and press alt+M.</li>
+        <li>Position the cursor or select a code block where you need to record and press alt+M.</li>
         <li>Fill in message and members,then submit. And see the EasyCR file. Wow! Magic happened, A new marked item is added. So incredible!!!</li>
     </ol>
     ]]></description>

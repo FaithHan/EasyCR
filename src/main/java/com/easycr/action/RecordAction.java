@@ -7,6 +7,7 @@ import com.easycr.notify.RecordNotifier;
 import com.easycr.setting.AppSettingsState;
 import com.easycr.util.DateUtils;
 import com.easycr.util.DayResutFileUtils;
+import com.easycr.util.EditorUtils;
 import com.easycr.util.StringUtils;
 import com.intellij.codeInsight.daemon.OutsidersPsiFileSupport;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -22,7 +23,10 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 public class RecordAction extends AnAction {
 
@@ -39,8 +43,8 @@ public class RecordAction extends AnAction {
             Messages.showErrorDialog("You need to select a code line", "EasyCR");
             return;
         }
-        String codeDemo = getSelectedText(editor);
-        int column = getColumn(editor);
+        String codeDemo = EditorUtils.getSelectedText(editor);
+        int column = EditorUtils.getColumn(editor);
         Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         String basePath = Optional.ofNullable(project.getBasePath()).orElseThrow(RuntimeException::new);
         String projectName = project.getName();
@@ -82,28 +86,6 @@ public class RecordAction extends AnAction {
                 .map(FileEditor::getFile)
                 .map(VirtualFile::getPath)
                 .orElseThrow(RuntimeException::new);
-    }
-
-    private String getSelectedText(Editor editor) {
-        String codeDemo = Optional.ofNullable(editor.getSelectionModel().getSelectedText())
-                .map(String::trim).orElse(null);
-        if (StringUtils.isEmpty(codeDemo)) {
-            return null;
-        } else {
-            return codeDemo;
-        }
-    }
-
-    private int getColumn(Editor editor) {
-        String codeDemo = Optional.ofNullable(editor.getSelectionModel().getSelectedText())
-                .map(String::trim).orElse(null);
-        if (StringUtils.isEmpty(codeDemo)) {
-            return editor.getCaretModel().getCurrentCaret().getLogicalPosition().line + 1;
-        } else {
-            int beginEmptyLineCount = (int) Arrays.stream(codeDemo.split("\n"))
-                    .takeWhile(line -> line.trim().equals(StringUtils.EMPTY)).count();
-            return editor.offsetToLogicalPosition(editor.getSelectionModel().getSelectionStart()).line + 1 + beginEmptyLineCount;
-        }
     }
 
 }

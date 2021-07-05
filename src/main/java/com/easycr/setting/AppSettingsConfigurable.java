@@ -8,9 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static com.easycr.setting.AppSettingsState.DEFAULT_LOG_PATH;
-import static com.easycr.setting.AppSettingsState.DEFAULT_MEMBERS;
-
 /**
  * Provides controller functionality for application settings.
  */

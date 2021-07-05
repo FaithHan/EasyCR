@@ -13,6 +13,8 @@ import lombok.SneakyThrows;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class DayResutFileUtils {
 
@@ -49,36 +51,30 @@ public abstract class DayResutFileUtils {
         while ((line = reader.readLine()) != null) {
             String originLine = line;
             line = line.trim();
-            if (line.startsWith("## Date")) {
-                String date = line.substring(9);
+            if (PatternUtils.isDate(line)) {
+                String date = PatternUtils.getDate(line);
                 currentDayResult = map.computeIfAbsent(date, DayResult::new);
-            } else if (line.startsWith("####")) {
-                currentProjectName = line.substring(5);
+            } else if (PatternUtils.isProject(line)) {
+                currentProjectName = PatternUtils.getProject(line);
                 Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().computeIfAbsent(currentProjectName, key -> new ArrayList<>());
-            } else if (line.startsWith("*")) {
-                int a = line.indexOf("/");
-                int b = line.indexOf(":");
-                while (line.charAt(b) != ' ') {
-                    b++;
-                }
-                int c = line.lastIndexOf("@");
+            } else if (PatternUtils.isMessage(line)) {
                 FixItem fixItem = FixItem.builder()
-                        .position(line.substring(a, b))
-                        .message(line.substring(b, c).trim())
-                        .member(line.substring(c + 1))
+                        .position(PatternUtils.getPosition(line))
+                        .message(PatternUtils.getMessage(line))
+                        .member(PatternUtils.getMember(line))
                         .build();
                 Objects.requireNonNull(currentDayResult);
                 currentDayResult.getProjectResultMap().get(currentProjectName).add(fixItem);
-            } else if (line.startsWith("```") && !codeDemoBegin) {
-                codeDemoBegin = true;
-            } else if (line.startsWith("```") && codeDemoBegin) {
-                codeDemoBegin = false;
-                Objects.requireNonNull(currentDayResult);
-                List<FixItem> fixItems = currentDayResult.getProjectResultMap().get(currentProjectName);
-                fixItems.get(fixItems.size() - 1).setCodeDemo(String.join("\n", codeDemoLines));
-                codeDemoLines.clear();
-            } else if (!line.startsWith("```") && codeDemoBegin) {
+            } else if (PatternUtils.isCodeBountry(line)) {
+                if (codeDemoBegin) {
+                    Objects.requireNonNull(currentDayResult);
+                    List<FixItem> fixItems = currentDayResult.getProjectResultMap().get(currentProjectName);
+                    fixItems.get(fixItems.size() - 1).setCodeDemo(String.join("\n", codeDemoLines));
+                    codeDemoLines.clear();
+                }
+                codeDemoBegin = !codeDemoBegin;
+            } else if (!PatternUtils.isCodeBountry(line) && codeDemoBegin) {
                 codeDemoLines.add(originLine);
             }
         }
@@ -111,5 +107,77 @@ public abstract class DayResutFileUtils {
         fileByIoFile.setBinaryContent(out.toByteArray());
     }
 
+    private static class PatternUtils {
+
+        public static final Pattern MESSAGE = Pattern.compile("^\\* \\[ ]\\s+(.*:\\d+)\\s+(.*?)\\s+@(.*)$");
+
+        public static final Pattern DATE = Pattern.compile("^## Date: (\\d{4}-\\d{2}-\\d{2})$");
+
+        public static final Pattern PROJECT = Pattern.compile("^####\\s+(.+)$");
+
+        public static final Pattern CODE_BOUNDRY = Pattern.compile("^```$");
+
+        public static boolean isMessage(String line) {
+            return MESSAGE.matcher(line).matches();
+        }
+
+        public static boolean isDate(String line) {
+            return DATE.matcher(line).matches();
+        }
+
+        public static boolean isProject(String line) {
+            return PROJECT.matcher(line).matches();
+        }
+
+        public static boolean isCodeBountry(String line) {
+            return CODE_BOUNDRY.matcher(line).matches();
+        }
+
+        public static String getDate(String line) {
+            Matcher matcher = DATE.matcher(line);
+            if (matcher.find()) {
+                return matcher.group(1);
+            } else {
+                return null;
+            }
+        }
+
+        public static String getProject(String line) {
+            Matcher matcher = PROJECT.matcher(line);
+            if (matcher.find()) {
+                return matcher.group(1);
+            } else {
+                return null;
+            }
+        }
+
+        public static String getPosition(String line) {
+            Matcher matcher = MESSAGE.matcher(line);
+            if (matcher.find()) {
+                return matcher.group(1);
+            } else {
+                return null;
+            }
+        }
+
+        public static String getMessage(String line) {
+            Matcher matcher = MESSAGE.matcher(line);
+            if (matcher.find()) {
+                return matcher.group(2);
+            } else {
+                return null;
+            }
+        }
+
+        public static String getMember(String line) {
+            Matcher matcher = MESSAGE.matcher(line);
+            if (matcher.find()) {
+                return matcher.group(3);
+            } else {
+                return null;
+            }
+        }
+
+    }
 
 }
