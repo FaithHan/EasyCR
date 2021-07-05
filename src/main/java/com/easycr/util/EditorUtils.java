@@ -54,7 +54,7 @@ public class EditorUtils {
     private static List<String> IndentFourSpace(List<String> lines) {
         Pattern pattern = Pattern.compile("(\\s*)(.*)");
         int indentCount = lines.stream()
-                .filter(line -> !line.trim().isEmpty())
+                .filter(line -> !line.isBlank())
                 .map(line -> {
                     Matcher matcher = pattern.matcher(line);
                     if (matcher.find()) {
