@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.example'
-version '2.5'
+version '2.6'
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-        optimze code demo format    
+        optimze text file operation
       """
 }
 test {
