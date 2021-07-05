@@ -28,7 +28,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-        optimze text file operation
+        optimize code demo format.
       """
 }
 test {
