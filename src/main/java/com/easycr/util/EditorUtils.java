@@ -71,7 +71,7 @@ public class EditorUtils {
             return new ArrayList<>(lines);
         } else {
             return lines.stream().map(line -> {
-                if (line.trim().isEmpty()) {
+                if (line.isBlank()) {
                     return line;
                 }
                 Matcher matcher = pattern.matcher(line);
