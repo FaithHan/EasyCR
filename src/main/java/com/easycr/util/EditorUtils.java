@@ -11,6 +11,8 @@ import java.util.stream.IntStream;
 
 public class EditorUtils {
 
+    private static final String SPLIT_PATTERN = "\r?\n";
+
     public static String getSelectedText(Editor editor) {
         String selectedText = editor.getSelectionModel().getSelectedText();
         String codeDemo = Optional.ofNullable(selectedText).map(String::trim).orElse(null);
@@ -18,7 +20,7 @@ public class EditorUtils {
             return null;
         }
 
-        List<String> lines = ListUtils.trim(Arrays.asList(selectedText.split("\n")), value -> StringUtils.isEmpty(value.trim()));
+        List<String> lines = ListUtils.trim(Arrays.asList(selectedText.split(SPLIT_PATTERN)), value -> StringUtils.isEmpty(value.trim()));
 
         int startNotEmptyLineNumber = getStartNotEmptyLineNumber(editor);
         int lineStartOffset = editor.getDocument().getLineStartOffset(startNotEmptyLineNumber - 1);
@@ -49,7 +51,7 @@ public class EditorUtils {
     }
 
     private static int getStartNotEmptyLineNumber(Editor editor) {
-        int beginEmptyLineCount = (int) Arrays.stream(Objects.requireNonNull(editor.getSelectionModel().getSelectedText()).split("\n"))
+        int beginEmptyLineCount = (int) Arrays.stream(Objects.requireNonNull(editor.getSelectionModel().getSelectedText()).split(SPLIT_PATTERN))
                 .takeWhile(line -> line.trim().equals(StringUtils.EMPTY)).count();
         return editor.offsetToLogicalPosition(editor.getSelectionModel().getSelectionStart()).line + 1 + beginEmptyLineCount;
     }
