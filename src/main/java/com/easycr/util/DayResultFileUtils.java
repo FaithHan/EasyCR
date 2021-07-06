@@ -16,6 +16,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.easycr.constants.Constants.FILE_SEPARATOR;
+
 public abstract class DayResultFileUtils {
 
     private static final String FILE_NAME = "EasyCR.md";
@@ -70,7 +72,7 @@ public abstract class DayResultFileUtils {
                 if (codeDemoBegin) {
                     Objects.requireNonNull(currentDayResult);
                     List<FixItem> fixItems = currentDayResult.getProjectResultMap().get(currentProjectName);
-                    fixItems.get(fixItems.size() - 1).setCodeDemo(String.join("\n", codeDemoLines));
+                    fixItems.get(fixItems.size() - 1).setCodeDemo(String.join(FILE_SEPARATOR, codeDemoLines));
                     codeDemoLines.clear();
                 }
                 codeDemoBegin = !codeDemoBegin;

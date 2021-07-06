@@ -3,6 +3,8 @@ package com.easycr.entity;
 import com.easycr.util.StringUtils;
 import lombok.*;
 
+import static com.easycr.constants.Constants.FILE_SEPARATOR;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -22,6 +24,6 @@ public class FixItem {
         if (StringUtils.isEmpty(codeDemo)) {
             return descriptionLine;
         }
-        return String.join("\n", descriptionLine, "```", codeDemo, "```");
+        return String.join(FILE_SEPARATOR, descriptionLine, "```", codeDemo, "```");
     }
 }

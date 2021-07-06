@@ -9,6 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.easycr.constants.Constants.FILE_SEPARATOR;
+
 public class EditorUtils {
 
     private static final String SPLIT_PATTERN = "\r?\n";
@@ -19,7 +21,7 @@ public class EditorUtils {
         }
         List<String> lines = ListUtils.trim(getSelectedTextLines(editor), String::isBlank);
         formatFirstLine(editor, lines);
-        return String.join("\n", indentFourSpace(lines));
+        return String.join(FILE_SEPARATOR, indentFourSpace(lines));
     }
 
     public static int getColumn(Editor editor) {
