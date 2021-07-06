@@ -19,20 +19,9 @@ public class EditorUtils {
         if (StringUtils.isEmpty(codeDemo)) {
             return null;
         }
-
         List<String> lines = ListUtils.trim(Arrays.asList(selectedText.split(SPLIT_PATTERN)), value -> StringUtils.isEmpty(value.trim()));
-
-        int startNotEmptyLineNumber = getStartNotEmptyLineNumber(editor);
-        int lineStartOffset = editor.getDocument().getLineStartOffset(startNotEmptyLineNumber - 1);
-        int lineEndOffset = editor.getDocument().getLineEndOffset(startNotEmptyLineNumber - 1);
-        String lineContent = editor.getDocument().getText(new TextRange(lineStartOffset, lineEndOffset));
-        if (lines.size() != 1) {
-            String firstLine = lines.get(0);
-            int i = lineContent.indexOf(firstLine);
-            lines.set(0, StringUtils.SPACE.repeat(i) + firstLine);
-        }
-        lines = IndentFourSpace(lines);
-        return String.join("\n", lines);
+        formatFirstLine(editor, lines);
+        return String.join("\n", indentFourSpace(lines));
     }
 
     public static int getColumn(Editor editor) {
@@ -45,13 +34,23 @@ public class EditorUtils {
         }
     }
 
+    private static void formatFirstLine(Editor editor, List<String> lines) {
+        int startNotEmptyLineNumber = getStartNotEmptyLineNumber(editor);
+        int lineStartOffset = editor.getDocument().getLineStartOffset(startNotEmptyLineNumber - 1);
+        int lineEndOffset = editor.getDocument().getLineEndOffset(startNotEmptyLineNumber - 1);
+        String lineContent = editor.getDocument().getText(new TextRange(lineStartOffset, lineEndOffset));
+        String firstLine = lines.get(0);
+        int i = lineContent.indexOf(firstLine);
+        lines.set(0, StringUtils.SPACE.repeat(i) + firstLine);
+    }
+
     private static int getStartNotEmptyLineNumber(Editor editor) {
         int beginEmptyLineCount = (int) Arrays.stream(Objects.requireNonNull(editor.getSelectionModel().getSelectedText()).split(SPLIT_PATTERN))
                 .takeWhile(line -> line.trim().equals(StringUtils.EMPTY)).count();
         return editor.offsetToLogicalPosition(editor.getSelectionModel().getSelectionStart()).line + 1 + beginEmptyLineCount;
     }
 
-    private static List<String> IndentFourSpace(List<String> lines) {
+    private static List<String> indentFourSpace(List<String> lines) {
         Pattern pattern = Pattern.compile("(\\s*)(.*)");
         int indentCount = lines.stream()
                 .filter(line -> !line.isBlank())
