@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class DayResutFileUtils {
+public abstract class DayResultFileUtils {
 
     private static final String FILE_NAME = "EasyCR.md";
 

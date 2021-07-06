@@ -6,7 +6,7 @@ import com.easycr.entity.FixItem;
 import com.easycr.notify.RecordNotifier;
 import com.easycr.setting.AppSettingsState;
 import com.easycr.util.DateUtils;
-import com.easycr.util.DayResutFileUtils;
+import com.easycr.util.DayResultFileUtils;
 import com.easycr.util.EditorUtils;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -68,13 +68,13 @@ public class RecordAction extends AnAction {
                 .member(member)
                 .build();
 
-        Map<String, DayResult> dayResultMap = DayResutFileUtils.converter();
+        Map<String, DayResult> dayResultMap = DayResultFileUtils.converter();
 
         dayResultMap.computeIfAbsent(DateUtils.formatDate(new Date()), DayResult::new)
                 .getProjectResultMap().computeIfAbsent(projectName, key -> new ArrayList<>())
                 .add(fixItem);
 
-        WriteCommandAction.runWriteCommandAction(null, () -> DayResutFileUtils.print(dayResultMap));
+        WriteCommandAction.runWriteCommandAction(null, () -> DayResultFileUtils.print(dayResultMap));
         RecordNotifier.notifyInfo(project, position);
     }
 
