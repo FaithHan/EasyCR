@@ -13,25 +13,27 @@ public class EditorUtils {
 
     private static final String SPLIT_PATTERN = "\r?\n";
 
-    public static String getSelectedText(Editor editor) {
-        String selectedText = editor.getSelectionModel().getSelectedText();
-        String codeDemo = Optional.ofNullable(selectedText).map(String::trim).orElse(null);
-        if (StringUtils.isEmpty(codeDemo)) {
+    public static String getCodeDemo(Editor editor) {
+        if (isSelectedTextBlank(editor)) {
             return null;
         }
-        List<String> lines = ListUtils.trim(Arrays.asList(selectedText.split(SPLIT_PATTERN)), value -> StringUtils.isEmpty(value.trim()));
+        List<String> lines = ListUtils.trim(getSelectedTextLines(editor), String::isBlank);
         formatFirstLine(editor, lines);
         return String.join("\n", indentFourSpace(lines));
     }
 
     public static int getColumn(Editor editor) {
-        String codeDemo = Optional.ofNullable(editor.getSelectionModel().getSelectedText())
-                .map(String::trim).orElse(null);
-        if (StringUtils.isEmpty(codeDemo)) {
+        if (isSelectedTextBlank(editor)) {
             return editor.getCaretModel().getCurrentCaret().getLogicalPosition().line + 1;
         } else {
             return getStartNotEmptyLineNumber(editor);
         }
+    }
+
+    private static boolean isSelectedTextBlank(Editor editor) {
+        return Optional.ofNullable(editor.getSelectionModel().getSelectedText())
+                .orElse(StringUtils.EMPTY)
+                .isBlank();
     }
 
     private static void formatFirstLine(Editor editor, List<String> lines) {
@@ -45,9 +47,14 @@ public class EditorUtils {
     }
 
     private static int getStartNotEmptyLineNumber(Editor editor) {
-        int beginEmptyLineCount = (int) Arrays.stream(Objects.requireNonNull(editor.getSelectionModel().getSelectedText()).split(SPLIT_PATTERN))
-                .takeWhile(line -> line.trim().equals(StringUtils.EMPTY)).count();
+        int beginEmptyLineCount = (int) getSelectedTextLines(editor).stream().takeWhile(String::isBlank).count();
         return editor.offsetToLogicalPosition(editor.getSelectionModel().getSelectionStart()).line + 1 + beginEmptyLineCount;
+    }
+
+    private static List<String> getSelectedTextLines(Editor editor) {
+        return Optional.ofNullable(editor.getSelectionModel().getSelectedText())
+                .map(text -> Arrays.asList(text.split(SPLIT_PATTERN)))
+                .orElseGet(Collections::emptyList);
     }
 
     private static List<String> indentFourSpace(List<String> lines) {

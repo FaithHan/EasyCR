@@ -41,7 +41,7 @@ public class RecordAction extends AnAction {
             Messages.showErrorDialog("You need to select a code line", "EasyCR");
             return;
         }
-        String codeDemo = EditorUtils.getSelectedText(editor);
+        String codeDemo = EditorUtils.getCodeDemo(editor);
         int column = EditorUtils.getColumn(editor);
         Project project = e.getRequiredData(CommonDataKeys.PROJECT);
         String basePath = Optional.ofNullable(project.getBasePath()).orElseThrow(RuntimeException::new);
