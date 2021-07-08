@@ -13,8 +13,6 @@ import static com.easycr.constants.Constants.FILE_SEPARATOR;
 
 public class EditorUtils {
 
-    private static final String SPLIT_PATTERN = "\r?\n";
-
     public static String getCodeDemo(Editor editor) {
         if (isSelectedTextBlank(editor)) {
             return null;
@@ -55,7 +53,7 @@ public class EditorUtils {
 
     private static List<String> getSelectedTextLines(Editor editor) {
         return Optional.ofNullable(editor.getSelectionModel().getSelectedText())
-                .map(text -> Arrays.asList(text.split(SPLIT_PATTERN)))
+                .map(text -> Arrays.asList(text.split("\\R")))
                 .orElseGet(Collections::emptyList);
     }
 
