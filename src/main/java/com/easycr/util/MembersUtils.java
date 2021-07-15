@@ -18,7 +18,7 @@ public abstract class MembersUtils {
                 .map(String::trim)
                 .filter(StringUtils::isNotEmpty)
                 .collect(Collectors.toList());
-        if (members.isEmpty()) {
+        if (members.size() <= 1) {
             return Collections.emptyList();
         }
         String first = members.remove(0);
