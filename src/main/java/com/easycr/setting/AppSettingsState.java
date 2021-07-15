@@ -27,9 +27,11 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
 
     public static final String DEFAULT_LOG_PATH = "";
     public static final String DEFAULT_MEMBERS = "";
+    public static final boolean DEFAULT_GROUP_BY_MEMBER = false;
 
     public String logPath = DEFAULT_LOG_PATH;
     public String members = DEFAULT_MEMBERS;
+    public boolean groupByMember = DEFAULT_GROUP_BY_MEMBER;
 
     public static AppSettingsState getInstance() {
         return ApplicationManager.getApplication().getService(AppSettingsState.class);

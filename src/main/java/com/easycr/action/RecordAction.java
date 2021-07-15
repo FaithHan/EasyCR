@@ -58,7 +58,10 @@ public class RecordAction extends AnAction {
         }
 
         String message = recordDialog.message.getText();
-        String member = Optional.ofNullable(recordDialog.member.getSelectedItem()).map(Object::toString).orElse("");
+        String member = Optional.ofNullable(recordDialog.member.getSelectedItem())
+                .map(Object::toString)
+                .map(String::trim)
+                .orElse("");
         String position = filePath.substring(basePath.length()) + ":" + column;
 
         FixItem fixItem = FixItem.builder()
@@ -74,7 +77,7 @@ public class RecordAction extends AnAction {
                 .getProjectResultMap().computeIfAbsent(projectName, key -> new ArrayList<>())
                 .add(fixItem);
 
-        WriteCommandAction.runWriteCommandAction(null, () -> DayResultFileUtils.print(dayResultMap));
+        WriteCommandAction.runWriteCommandAction(null, () -> DayResultFileUtils.print(dayResultMap, service.groupByMember));
         RecordNotifier.notifyInfo(project, position);
     }
 

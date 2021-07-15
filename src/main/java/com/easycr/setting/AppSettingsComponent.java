@@ -2,6 +2,7 @@
 
 package com.easycr.setting;
 
+import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
@@ -17,12 +18,13 @@ public class AppSettingsComponent {
     private final JPanel myMainPanel;
     private final JBTextField logPath = new JBTextField();
     private final JBTextField members = new JBTextField();
+    private final JBCheckBox groupByMember = new JBCheckBox();
 
     public AppSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(new JBLabel("Your log path"), logPath, 1, false)
-                .addLabeledComponent(new JBLabel("Members"), members, 1, false)
-                .addComponent(new JBLabel("Members use \",\"to split"))
+                .addLabeledComponent(new JBLabel("Members (use\",\"to split)"), members, 1, false)
+                .addLabeledComponent(new JBLabel("Logs group by member"), groupByMember, false)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
@@ -50,6 +52,14 @@ public class AppSettingsComponent {
 
     public void setMembers(String newText) {
         members.setText(newText);
+    }
+
+    public boolean getGroupByMember() {
+        return groupByMember.isSelected();
+    }
+
+    public void setGroupByMember(boolean isSelected) {
+        groupByMember.setSelected(isSelected);
     }
 
 }

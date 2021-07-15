@@ -40,7 +40,8 @@ public class AppSettingsConfigurable implements Configurable {
     public boolean isModified() {
         AppSettingsState settings = AppSettingsState.getInstance();
         return !mySettingsComponent.getLogPath().equals(settings.logPath) ||
-                !mySettingsComponent.getMembers().equals(settings.members);
+                !mySettingsComponent.getMembers().equals(settings.members) ||
+                mySettingsComponent.getGroupByMember() != settings.groupByMember;
     }
 
     @Override
@@ -48,6 +49,7 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
         settings.logPath = mySettingsComponent.getLogPath();
         settings.members = mySettingsComponent.getMembers();
+        settings.groupByMember = mySettingsComponent.getGroupByMember();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class AppSettingsConfigurable implements Configurable {
         AppSettingsState settings = AppSettingsState.getInstance();
         mySettingsComponent.setLogPath(settings.logPath);
         mySettingsComponent.setMembers(settings.members);
+        mySettingsComponent.setGroupByMember(settings.groupByMember);
     }
 
     @Override

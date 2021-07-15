@@ -84,7 +84,7 @@ public abstract class DayResultFileUtils {
     }
 
     @SneakyThrows
-    public static void print(Map<String, DayResult> map) {
+    public static void print(Map<String, DayResult> map, boolean groupByMember) {
         AppSettingsState service = ApplicationManager.getApplication().getService(AppSettingsState.class);
         VirtualFile fileByIoFile = Optional.ofNullable(LocalFileSystem.getInstance().findFileByIoFile(new File(service.logPath, FILE_NAME)))
                 .orElseThrow(RuntimeException::new);
@@ -97,9 +97,10 @@ public abstract class DayResultFileUtils {
                 printWriter.println();
                 printWriter.println(String.format("#### %s", project));
                 printWriter.println();
-                for (FixItem fixItem : fixItems) {
-                    printWriter.println(fixItem);
+                if (groupByMember) {
+                    Collections.sort(fixItems);
                 }
+                fixItems.forEach(printWriter::println);
             });
             printWriter.println();
             printWriter.println("---");

@@ -4,7 +4,6 @@ import com.easycr.setting.AppSettingsState;
 import com.intellij.openapi.application.ApplicationManager;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
