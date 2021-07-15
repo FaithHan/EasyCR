@@ -19,7 +19,7 @@ public abstract class MembersUtils {
                 .filter(StringUtils::isNotEmpty)
                 .collect(Collectors.toList());
         if (members.size() <= 1) {
-            return Collections.emptyList();
+            return members;
         }
         String first = members.remove(0);
         members.sort(Comparator.comparing(Function.identity()));
