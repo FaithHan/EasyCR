@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.example'
-version '3.1'
+version '3.2'
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ intellij {
 }
 patchPluginXml {
     changeNotes = """
-        Compatible with 2020.2
+        Compatibility upgrade
       """
 }
 test {
